@@ -13,14 +13,14 @@ concurrency:
 
 jobs:
   compile:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Retrieve cache
         id: cache-key
         uses: actions/cache@v4
         with:
           path: packer-plugin-cross
-          key: key-${{ github.sha }}-1
+          key: key-${{ github.sha }}-2
 
       - name: Checkout
         if: steps.cache-key.outputs.cache-hit != 'true'
@@ -51,7 +51,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: packer-plugin-cross
-          key: key-${{ github.sha }}-1
+          key: key-${{ github.sha }}-2
 
   test:
     needs: compile
@@ -81,7 +81,7 @@ jobs:
           - rock-4b/debos-radxa.pkr.hcl
           - wandboard/archlinuxarm.pkr.hcl
     name: Build ${{ matrix.boards }} image
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -100,7 +100,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: packer-plugin-cross
-          key: key-${{ github.sha }}-1
+          key: key-${{ github.sha }}-2
 
       - name: Bring plugin in place
         run: |
@@ -120,7 +120,7 @@ jobs:
 
   plugin-check:
     needs: compile
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5.3.0
